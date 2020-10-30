@@ -1,0 +1,17 @@
+Начать:
+   For i = 0 to msg[i] != '\0'
+      ch = msg[i]
+   //зашифровать строчные буквы
+      If (ch >= 'a' and ch <= 'z')
+         ch = ch + key
+         if (ch > 'z')
+            ch = ch - 'z' + 'a' - 1
+         done
+         msg[i] = ch
+   //зашифровать заглавными буквами
+      else if (ch >= 'A' and ch <= 'Z')
+         ch = ch + key
+         if (ch > 'Z')
+            ch = ch - 'Z' + 'A' - 1
+         msg[i] = ch
+   Распечатать зашифрованное сообщение и завершить
