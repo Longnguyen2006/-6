@@ -3,4 +3,4 @@ using namespace std;
 
 int main()
 {
-    plog::init(plog::debug, "Hello.txt");
+    plog::init(plog::debug, "Log");
