@@ -1,0 +1,91 @@
+#include <plog/Log.h>
+using boost::thread_specific_ptr;
+using namespace std;
+class logger : public std::streambuf
+{
+public:
+    typedef char                                char_type;
+    typedef std::char_traits<char_type>         traits_type;
+    typedef traits_type::int_type               int_type;
+
+    struct line_buffer;
+
+    explicit logger (sys::raw_handle console, bool prepend_time = true);
+    ~logger ();
+
+protected:
+    virtual int_type overflow (int_type c);
+    virtual std::streamsize xsputn (const char_type* buf, std::streamsize size);
+
+private:
+    line_buffer* buffer ();
+    void write_line (const char* data, size_t size);
+    void write_line (const std::string& line) { write_line (line.data(), line.size()); }
+
+    sys::raw_handle     m_con;
+    thread_specific_ptr<line_buffer>
+                        m_buffer;
+    bool                m_console_output;
+    bool                m_prepend_time;
+};
+
+int main() {
+   cout<<"Enter the message:\n";
+   char msg[100];
+   cin.getline(msg,100); //take the message as input
+   int i, j, length, choice, key;
+   cout << "Enter key: ";
+   cin >> key; //take the key as input
+   length = strlen(msg);
+   cout<<"Enter your choice \n1. Encryption \n2. Decryption \n";
+   cin>>choice;
+   if (choice==1) //for encryption
+   {
+      char ch;
+      for(int i = 0; msg[i] != '\0'; ++i) {
+         ch = msg[i];
+         //çàøèôðîâàòü ñòðî÷íûå áóêâû
+         if (ch >= 'a' && ch <= 'z'){
+            ch = ch + key;
+            if (ch > 'z') {
+               ch = ch - 'z' + 'a' - 1;
+            }
+            msg[i] = ch;
+         }
+         //çàøèôðîâàòü çàãëàâíûìè áóêâàìè
+         else if (ch >= 'A' && ch <= 'Z'){
+            ch = ch + key;
+            if (ch > 'Z'){
+               ch = ch - 'Z' + 'A' - 1;
+            }
+            msg[i] = ch;
+         }
+      }
+      printf("Encrypted message: %s", msg);
+   }
+   else if (choice == 2) { //for decryption
+      char ch;
+      for(int i = 0; msg[i] != '\0'; ++i) {
+         ch = msg[i];}
+         //decrypt for lowercase letter
+         if(ch >= 'a' && ch <= 'z') {
+            ch = ch - key;
+            if(ch < 'a'){
+               ch = ch + 'z' - 'a' + 1;
+            }
+            msg[i] = ch;
+         }
+         //decrypt for uppercase letter
+         else if(ch >= 'A' && ch <= 'Z') {
+            ch = ch - key;
+            if(ch < 'A') {
+               ch = ch + 'Z' - 'A' + 1;
+            }
+            msg[i] = ch;
+         }
+      }
+      cout << "Decrypted message: " << msg;
+
+   return 0;
+}
+ 
